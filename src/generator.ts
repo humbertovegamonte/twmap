@@ -1,4 +1,4 @@
-import { Config, ClassMapping } from './types';
+import { Config, ClassMapping as _ClassMapping } from './types';
 import * as crypto from 'crypto';
 
 export class ClassNameGenerator {

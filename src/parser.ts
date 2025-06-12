@@ -31,12 +31,12 @@ export class FileParser {
         classNames: this.deduplicateClassNames(classNames),
         success: true
       };
-    } catch (error) {
+    } catch (_error) {
       return {
         filePath,
         classNames: [],
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: _error instanceof Error ? _error.message : 'Unknown error'
       };
     }
   }
@@ -54,7 +54,7 @@ export class FileParser {
           classNames.push(classAttr);
         }
       });
-    } catch (error) {
+    } catch (_error) {
       // Fallback to regex parsing if DOM parsing fails
       const classMatches = content.match(/class\s*=\s*["']([^"']*)["']/g);
       if (classMatches) {
@@ -123,7 +123,7 @@ export class FileParser {
           }
         }
       });
-    } catch (error) {
+    } catch (_error) {
       // Fallback to regex parsing if AST parsing fails
       const classMatches = content.match(/(?:className|class)\s*=\s*(?:["']([^"']*)["']|{["']([^"']*)["']})/g);
       if (classMatches) {
@@ -206,8 +206,8 @@ export class FileParser {
       if (content !== modifiedContent) {
         fs.writeFileSync(filePath, modifiedContent, 'utf-8');
       }
-    } catch (err) {
-      console.error(`Error writing file ${filePath}:`, err);
+    } catch (_error) {
+      console.error(`Error writing file ${filePath}:`, _error);
     }
   }
 }

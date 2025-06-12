@@ -3,7 +3,7 @@ import { Config, ClassMapping, ParseResult } from './types';
 import { FileParser } from './parser';
 import { ClassNameGenerator } from './generator';
 import { CSSGenerator } from './css-generator';
-import * as path from 'path';
+import * as _path from 'path';
 
 export class TwmapProcessor {
   private config: Config;

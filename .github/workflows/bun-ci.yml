@@ -1,0 +1,74 @@
+name: Bun CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Lint
+        run: bun run lint
+        continue-on-error: true
+
+      - name: Build
+        run: bun run build
+        continue-on-error: true
+
+      - name: Run tests
+        id: test
+        run: bun test --reporter junit --reporter-outfile test-results.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results.xml
+
+      - name: Notify Discord
+        if: always()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          JOB_STATUS: ${{ job.status }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          STATUS_MSG="${{ job.status }}"
+          if [ "$STATUS_MSG" = "success" ]; then
+            COLOR=3066993
+            CONTENT="✅ Bun CI tests passed!"
+          else
+            COLOR=15158332
+            CONTENT="❌ Bun CI tests failed!"
+          fi
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d "{\"embeds\":[{\"title\":\"Bun CI Results\",\"description\":\"${CONTENT}\",\"color\":$COLOR,\"fields\":[{\"name\":\"Repository\",\"value\":\"$GITHUB_REPOSITORY\",\"inline\":true},{\"name\":\"Branch\",\"value\":\"$GITHUB_REF\",\"inline\":true},{\"name\":\"Commit\",\"value\":\"$GITHUB_SHA\",\"inline\":false},{\"name\":\"Actor\",\"value\":\"$GITHUB_ACTOR\",\"inline\":true},{\"name\":\"Run URL\",\"value\":\"$GITHUB_RUN_URL\",\"inline\":false}]}]}" \
+            $DISCORD_WEBHOOK_URL
+
+      - name: Add job summary
+        if: always()
+        run: |
+          echo "## Bun CI Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY 

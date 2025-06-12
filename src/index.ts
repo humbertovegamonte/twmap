@@ -30,7 +30,7 @@ async function main() {
 
   try {
     // Load configuration
-    let config = loadConfig(options.config);
+    const config = loadConfig(options.config);
 
     // Override config with CLI options
     if (options.input) config.input = options.input;

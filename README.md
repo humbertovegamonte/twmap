@@ -4,7 +4,7 @@
 **Contact:** [contact@cojocarudavid.me](mailto:contact@cojocarudavid.me)  
 **Website:** [https://www.cojocarudavid.me/](https://www.cojocarudavid.me/)
 
-[![npm version](https://img.shields.io/npm/v/twmap.svg)](https://www.npmjs.com/package/twmap)
+[![npm version](https://img.shields.io/npm/v/twmap.svg)](https://www.npmjs.com/package/@cojocarudavid/twmap)
 [![GitHub stars](https://img.shields.io/github/stars/cojocaru-david/twmap.svg?style=social)](https://github.com/cojocaru-david/twmap)
 
 A CLI tool that scans HTML, JSX, and TSX files to extract Tailwind utility classes and generates optimized CSS mappings with short class names.
@@ -21,7 +21,7 @@ A CLI tool that scans HTML, JSX, and TSX files to extract Tailwind utility class
 ## Installation
 
 ```bash
-npm install -g twmap
+npm install -g @cojocarudavid/twmap
 ```
 
 Or run directly with npx:

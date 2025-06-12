@@ -28,7 +28,7 @@ export function loadConfig(configPath?: string): Config {
       ...defaultConfig,
       ...userConfig
     };
-  } catch (error) {
+  } catch (_error) {
     console.warn(`Warning: Could not load config file ${configPath}. Using defaults.`);
     return defaultConfig;
   }
