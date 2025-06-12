@@ -1,0 +1,12 @@
+src/
+examples/
+test/
+tsconfig.json
+*.config.js
+*.test.*
+*.spec.*
+*.md
+.git/
+.gitignore
+node_modules/
+*.log 

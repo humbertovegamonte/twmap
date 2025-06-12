@@ -1,0 +1,63 @@
+{
+  "name": "twmap",
+  "version": "1.0.0",
+  "description": "A CLI tool to extract and optimize Tailwind utility classes",
+  "main": "dist/index.js",
+  "bin": {
+    "twmap": "./bin/twmap.js"
+  },
+  "files": [
+    "dist/",
+    "bin/",
+    "twmap.config.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cojocaru-david/twmap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cojocaru-david/twmap/issues"
+  },
+  "homepage": "https://github.com/cojocaru-david/twmap#readme",
+  "author": "Cojocaru David <contact@cojocarudavid.me>",
+  "scripts": {
+    "build": "bun run tsc",
+    "dev": "bun run tsx src/index.ts",
+    "test": "bun test",
+    "start": "bun run build && bun run node bin/twmap.js",
+    "twmap": "bun run build && bun run node bin/twmap.js"
+  },
+  "keywords": [
+    "tailwind",
+    "css",
+    "cli",
+    "optimization"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@babel/parser": "^7.27.5",
+    "@babel/traverse": "^7.27.4",
+    "@babel/types": "^7.27.6",
+    "commander": "^14.0.0",
+    "glob": "^11.0.2",
+    "jsdom": "^26.1.0"
+  },
+  "devDependencies": {
+    "@types/babel__traverse": "^7.20.7",
+    "@types/jest": "^29.5.14",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^24.0.1",
+    "jest": "^30.0.0",
+    "ts-jest": "^29.4.0",
+    "tsx": "^4.20.2",
+    "typescript": "^5.8.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/test"
+    ]
+  }
+}
