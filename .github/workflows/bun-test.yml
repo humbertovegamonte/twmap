@@ -18,23 +18,22 @@ jobs:
       - name: Run tests
         id: test
         run: bun test
-    
-    # Always run this step, even if previous steps fail
-    - name: Notify Discord
-      if: always()
-      env:
-        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        JOB_STATUS: ${{ job.status }}
-      run: |
-        STATUS_MSG="${{ job.status }}"
-        if [ "$STATUS_MSG" = "success" ]; then
-          COLOR=3066993
-          CONTENT="✅ Bun CI tests passed!"
-        else
-          COLOR=15158332
-          CONTENT="❌ Bun CI tests failed!"
-        fi
-        curl -H "Content-Type: application/json" \
-          -X POST \
-          -d "{\"embeds\":[{\"title\":\"Bun CI Test Results\",\"description\":\"${CONTENT}\\nRepo: $GITHUB_REPOSITORY\\nCommit: $GITHUB_SHA\\nBy: $GITHUB_ACTOR\",\"color\":$COLOR}]}" \
-          $DISCORD_WEBHOOK_URL 
+      # Always run this step, even if previous steps fail
+      - name: Notify Discord
+        if: always()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          STATUS_MSG="${{ job.status }}"
+          if [ "$STATUS_MSG" = "success" ]; then
+            COLOR=3066993
+            CONTENT="✅ Bun CI tests passed!"
+          else
+            COLOR=15158332
+            CONTENT="❌ Bun CI tests failed!"
+          fi
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d "{\"embeds\":[{\"title\":\"Bun CI Test Results\",\"description\":\"${CONTENT}\\nRepo: $GITHUB_REPOSITORY\\nCommit: $GITHUB_SHA\\nBy: $GITHUB_ACTOR\",\"color\":$COLOR}]}" \
+            $DISCORD_WEBHOOK_URL 
